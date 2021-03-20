@@ -228,3 +228,39 @@ span {
 }
 
 .dropdown:hover .dropdown-content {display: block;}
+
+/*-------------------------- media query -----------------------------*/
+
+@media only screen and (max-width: 608px) {
+    
+    .myCard {
+        height: 12rem;
+    }
+    
+    .myCard > img {
+        display: none;
+    }
+
+    #restCards > .myCard {
+        height: 28rem;
+    }
+
+    #eventCards > .myCard {
+        height: 23rem;
+    }
+
+    h1 {
+        font-size: 3rem;
+    }
+
+    #locH {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 2rem;
+        grid-template-areas: 'h2' 'sort';
+    }
+
+    #sort {
+        display: none;
+    }
+
+}
