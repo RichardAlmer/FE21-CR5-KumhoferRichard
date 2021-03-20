@@ -157,58 +157,65 @@ var eventArray : Array<Locations> = [
     new Events("Dambulla", 21120, "No.57 Wellawaya-Ella-Kumbalwela Hwy", "img/volbeat.jpg", "Volbeat Live", "28.7.2022", "20:30", 22.00),
 ];
 
+//------------------------------------- Add Content --------------------------------------------
+function addCards(){
+
+    for (let value of locArray) {
+        document.querySelector("#locCards").innerHTML += value.displayCard() + value.displayLoc() + value.closingDiv();
+    }
+
+    var infoBtns = document.getElementsByClassName("btn");
+
+    for (let i = 0; i < infoBtns.length; i++) {
+        let infoBtn = infoBtns[i];
+        infoBtn.addEventListener("click", function(){
+            document.getElementById("locCards").style.display = "none";
+            document.getElementById("sort").style.display = "none";
+            document.getElementById("hRest").style.display = "block";
+            document.getElementById("hEv").style.display = "block";
+            for (let value of restArray) {
+                if (value.city == infoBtn.id){
+                    document.getElementById("restCards").innerHTML += value.displayCard(); 
+                }
+            }
+            for (let value of eventArray) {
+                if (value.city == infoBtn.id){
+                    document.getElementById("eventCards").innerHTML += value.displayCard(); 
+                }
+            }
+        })
+    }
+}
+addCards();
+
 //------------------------------------- Sort --------------------------------------------
 
-for (let i = 0; i < array.length; i++) {
-    document.getElementById("sortBtnML").addEventListener("click", function(){
-        let order = array[i].createdY + (array[i].createdM/12) + ((array[i].createdD/30)/12) + (((array[i].createdH/24)/30)/12) + ((((array[i].createdMin/60)/24)/30)/12);
+
+document.getElementById("sortBtnML").addEventListener("click", function(){
+    for (let i = 0; i < array.length; i++) {
+    let order = (array[i].createdY + (array[i].createdM/12) + ((array[i].createdD/30)/12) + (((array[i].createdH/24)/30)/12) + ((((array[i].createdMin/60)/24)/30)/12)) * -1;
+    array[i].order = Math.round(order * 100);
+    }
+
+    var rem = document.getElementById("locCards");
+    while(rem.firstChild) {
+        rem.removeChild(rem.lastChild);
+    }
+
+    addCards();
+
+});
+
+document.getElementById("sortBtnLL").addEventListener("click", function(){
+    for (let i = 0; i < array.length; i++) {
+        let order = (array[i].createdY + (array[i].createdM/12) + ((array[i].createdD/30)/12) + (((array[i].createdH/24)/30)/12) + ((((array[i].createdMin/60)/24)/30)/12));
         array[i].order = Math.round(order * 100);
-        console.log(array[i].order);
-    });
-    document.getElementById("sortBtnLL").addEventListener("click", function(){
-        let order = (array[i].createdY + (array[i].createdM/12) + ((array[i].createdD/30)/12) + (((array[i].createdH/24)/30)/12) + ((((array[i].createdMin/60)/24)/30)/12)) * -1;
-        array[i].order = Math.round(order * 100);
-        console.log(array[i].order);
-    });
-}
+    }
+    
+    var rem = document.getElementById("locCards");
+    while(rem.firstChild) {
+        rem.removeChild(rem.lastChild);
+    }
 
-//------------------------------------- Add Content --------------------------------------------
-
-for (let value of locArray) {
-    document.querySelector("#locCards").innerHTML += value.displayCard() + value.displayLoc() + value.closingDiv();
-}
-
-var infoBtns = document.getElementsByClassName("btn");
-
-for (let i = 0; i < infoBtns.length; i++) {
-    let infoBtn = infoBtns[i];
-    infoBtn.addEventListener("click", function(){
-        document.getElementById("locCards").style.display = "none";
-        document.getElementById("hRest").style.display = "block";
-        document.getElementById("hEv").style.display = "block";
-        for (let value of restArray) {
-            if (value.city == infoBtn.id){
-                document.getElementById("restCards").innerHTML += value.displayCard(); 
-            }
-        }
-        for (let value of eventArray) {
-            if (value.city == infoBtn.id){
-                document.getElementById("eventCards").innerHTML += value.displayCard(); 
-            }
-        }
-    })
-}
-
-
-
-
-
-
-
-
-
-
-// console.log(array[0].order);
-// console.log(locArray[0].order);
-// console.log(restArray[0].order);
-// console.log(eventArray[0].order);
+    addCards();
+});

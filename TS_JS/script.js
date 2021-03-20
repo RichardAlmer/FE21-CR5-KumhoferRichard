@@ -133,52 +133,59 @@ var eventArray = [
     new Events("Dambulla", 21120, "No.57 Wellawaya-Ella-Kumbalwela Hwy", "img/metallica.jpg", "Metallica Live", "15.6.2022", "21:00", 23.00),
     new Events("Dambulla", 21120, "No.57 Wellawaya-Ella-Kumbalwela Hwy", "img/volbeat.jpg", "Volbeat Live", "28.7.2022", "20:30", 22.00),
 ];
-var _loop_1 = function (i) {
-    document.getElementById("sortBtnML").addEventListener("click", function () {
-        var order = array[i].createdY + (array[i].createdM / 12) + ((array[i].createdD / 30) / 12) + (((array[i].createdH / 24) / 30) / 12) + ((((array[i].createdMin / 60) / 24) / 30) / 12);
-        array[i].order = Math.round(order * 100);
-        console.log(array[i].order);
-    });
-    document.getElementById("sortBtnLL").addEventListener("click", function () {
+//------------------------------------- Add Content --------------------------------------------
+function addCards() {
+    for (var _i = 0, locArray_1 = locArray; _i < locArray_1.length; _i++) {
+        var value = locArray_1[_i];
+        document.querySelector("#locCards").innerHTML += value.displayCard() + value.displayLoc() + value.closingDiv();
+    }
+    var infoBtns = document.getElementsByClassName("btn");
+    var _loop_1 = function (i) {
+        var infoBtn = infoBtns[i];
+        infoBtn.addEventListener("click", function () {
+            document.getElementById("locCards").style.display = "none";
+            document.getElementById("sort").style.display = "none";
+            document.getElementById("hRest").style.display = "block";
+            document.getElementById("hEv").style.display = "block";
+            for (var _i = 0, restArray_1 = restArray; _i < restArray_1.length; _i++) {
+                var value = restArray_1[_i];
+                if (value.city == infoBtn.id) {
+                    document.getElementById("restCards").innerHTML += value.displayCard();
+                }
+            }
+            for (var _a = 0, eventArray_1 = eventArray; _a < eventArray_1.length; _a++) {
+                var value = eventArray_1[_a];
+                if (value.city == infoBtn.id) {
+                    document.getElementById("eventCards").innerHTML += value.displayCard();
+                }
+            }
+        });
+    };
+    for (var i = 0; i < infoBtns.length; i++) {
+        _loop_1(i);
+    }
+}
+addCards();
+//------------------------------------- Sort --------------------------------------------
+document.getElementById("sortBtnML").addEventListener("click", function () {
+    for (var i = 0; i < array.length; i++) {
         var order = (array[i].createdY + (array[i].createdM / 12) + ((array[i].createdD / 30) / 12) + (((array[i].createdH / 24) / 30) / 12) + ((((array[i].createdMin / 60) / 24) / 30) / 12)) * -1;
         array[i].order = Math.round(order * 100);
-        console.log(array[i].order);
-    });
-};
-//------------------------------------- Sort --------------------------------------------
-for (var i = 0; i < array.length; i++) {
-    _loop_1(i);
-}
-//------------------------------------- Add Content --------------------------------------------
-for (var _i = 0, locArray_1 = locArray; _i < locArray_1.length; _i++) {
-    var value = locArray_1[_i];
-    document.querySelector("#locCards").innerHTML += value.displayCard() + value.displayLoc() + value.closingDiv();
-}
-var infoBtns = document.getElementsByClassName("btn");
-var _loop_2 = function (i) {
-    var infoBtn = infoBtns[i];
-    infoBtn.addEventListener("click", function () {
-        document.getElementById("locCards").style.display = "none";
-        document.getElementById("hRest").style.display = "block";
-        document.getElementById("hEv").style.display = "block";
-        for (var _i = 0, restArray_1 = restArray; _i < restArray_1.length; _i++) {
-            var value = restArray_1[_i];
-            if (value.city == infoBtn.id) {
-                document.getElementById("restCards").innerHTML += value.displayCard();
-            }
-        }
-        for (var _a = 0, eventArray_1 = eventArray; _a < eventArray_1.length; _a++) {
-            var value = eventArray_1[_a];
-            if (value.city == infoBtn.id) {
-                document.getElementById("eventCards").innerHTML += value.displayCard();
-            }
-        }
-    });
-};
-for (var i = 0; i < infoBtns.length; i++) {
-    _loop_2(i);
-}
-// console.log(array[0].order);
-// console.log(locArray[0].order);
-// console.log(restArray[0].order);
-// console.log(eventArray[0].order);
+    }
+    var rem = document.getElementById("locCards");
+    while (rem.firstChild) {
+        rem.removeChild(rem.lastChild);
+    }
+    addCards();
+});
+document.getElementById("sortBtnLL").addEventListener("click", function () {
+    for (var i = 0; i < array.length; i++) {
+        var order = (array[i].createdY + (array[i].createdM / 12) + ((array[i].createdD / 30) / 12) + (((array[i].createdH / 24) / 30) / 12) + ((((array[i].createdMin / 60) / 24) / 30) / 12));
+        array[i].order = Math.round(order * 100);
+    }
+    var rem = document.getElementById("locCards");
+    while (rem.firstChild) {
+        rem.removeChild(rem.lastChild);
+    }
+    addCards();
+});
